@@ -22,6 +22,5 @@ Pane Zoom
 bind Up run-shell tmux-zoom
 
 unbind Down
-bind Down run-shell tmux-unzoom```
-
-    
+bind Down run-shell tmux-unzoom
+```
