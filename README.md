@@ -14,11 +14,12 @@ window
 Pane Zoom
 ---------
 
-1. Add these scripts to your `$PATH`.
+1. Add these scripts to your *$PATH*.
 
-2. Put the following into your .tmux.conf:
+2. Put the following into your *.tmux.conf*:
 
-```unbind Up
+```
+unbind Up
 bind Up run-shell tmux-zoom
 
 unbind Down
