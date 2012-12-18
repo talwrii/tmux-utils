@@ -4,7 +4,8 @@
 tmux-unzoom
 
 tmux_zoom=$(tmux-pane)
-tmux new-window -d -n zoom 'clear && echo [ PANE ZOOMED ] && read'
+tmux new-window -d -n zoom 'clear && echo [ PANE ZOOMED ] && while true; do
+read -s; done'
 tmux swap-pane -s zoom
 tmux_stub=$(tmux-pane)
 
