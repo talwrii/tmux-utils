@@ -3,12 +3,17 @@ tmux-utils
 
 Various scripts and added tmux beahviors.
 
+**tmux-get VAR** - gets variable VAR from within the tmux environment
+
+**tmux-set VAR VALUE** - sets variable VAR to VALUE within the tmux environment
+
 **tmux-pane** - returns the unique id of the current pane
 
 **tmux-zoom** - takes the current pane and extracts it full size into its own
 window
 
 **tmux-unzoom** - replaces the zoom window into its original position
+
 
 
 Pane Zoom
