@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# Gets a variable from the tmux environment.
+
+# Copyright (c) Tobin Van Pelt
+
+vars=$(tmux show-environment)
+for word in $vars; do
+    if [[ "$word" == $1* ]]; then
+        value=${word##*=}
+    fi
+done
+
+echo $value

@@ -1,19 +1,11 @@
 #!/bin/bash
+#
 # Unzooms a previously zoomd pane.
 
-function get_var() {
-    vars=$(tmux show-environment)
-    for word in $vars; do
-        if [[ "$word" == $1* ]]; then
-            value=${word##*=}
-        fi
-    done
+# Copyright (c) Tobin Van Pelt
 
-    echo $value
-}
-
-tmux_zoom=$(get_var TMUX_ZOOM)
-tmux_stub=$(get_var TMUX_STUB)
+tmux_zoom=$(tmux-get TMUX_ZOOM)
+tmux_stub=$(tmux-get TMUX_STUB)
 
 if [ -z $tmux_zoom ]; then
     exit 0
@@ -30,5 +22,5 @@ tmux select-window -t "$current"
 tmux select-pane -t "$current"
 tmux kill-window -t zoom
 
-tmux set-environment -u TMUX_ZOOM
-tmux set-environment -u TMUX_STUB
+tmux-set TMUX_ZOOM
+tmux-set TMUX_STUB

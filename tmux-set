@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# Sets a variable within the tmux environment.
+# 
+#    tmux-set VAR         - unsets VAR
+#    tmux-set VAR VALUE   - sets VAR to VALUE
+
+# Copyright (c) Tobin Van Pelt
+
+if [ $# -eq 1 ]; then
+    tmux set-environment -u "$1"
+else
+    tmux set-environment "$1" "$2"
+fi
