@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# Unzooms a previously zoomd pane.
+
+# Copyright (c) Tobin Van Pelt
+
+tmux_zoom=$(tmux-get TMUX_ZOOM)
+tmux_stub=$(tmux-get TMUX_STUB)
+
+if [ -z $tmux_zoom ]; then
+    exit 0
+fi
+
+current=$(tmux-pane)
+tmux swap-pane -d -s "$tmux_zoom" -t "$tmux_stub"
+
+if [[ $current == $tmux_zoom ]] || [[ $current == $tmux_stub ]]; then
+    current=$tmux_zoom
+fi
+
+tmux select-window -t "$current"
+tmux select-pane -t "$current"
+tmux kill-window -t zoom
+
+tmux-set TMUX_ZOOM
+tmux-set TMUX_STUB
