@@ -16,6 +16,8 @@ window
 
 **tmux-await-copy** - Block until something has been using the copy-mode command
 
+**tmux-split-in-cwd** - open a new shell with same cwd as calling pane
+
 
 Pane Zoom
 ---------
