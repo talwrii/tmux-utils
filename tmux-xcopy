@@ -1,0 +1,10 @@
+#!/bin/bash
+# Copyright Tal Wrii
+
+# Go into copy-mode and immediately send the result to the X clipboard
+
+
+here=$(dirname $0)
+tmux copy-mode
+$here/tmux-await-copy
+tmux show-buffer | xclip -i
