@@ -14,7 +14,7 @@ window
 
 **tmux-unzoom** - replaces the zoom window into its original position
 
-**tmux-await-copy** - Block until something has been using the copy-mode command
+**tmux-await-copy** - block until something has been copied using the copy-mode command
 
 **tmux-split-in-cwd** - open a new shell with same cwd as calling pane
 
