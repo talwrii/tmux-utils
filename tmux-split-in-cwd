@@ -1,6 +1,10 @@
 #!/bin/sh
 # tmux-split-in-cwd - open a new shell with same cwd as calling pane
 
+# Copyright Philipp Schmitt
+# Distributed under GPL v3 license
+
+
 SIP=$(tmux display-message -p "#S:#I:#P")
 PTY=$(tmux server-info |
         egrep flags=\|bytes |

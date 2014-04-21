@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Copyright Tal Wrii
+# Distriuted under GPL 3
+
 unique="REALLYUNIQUE"
 tmux set-buffer $unique
 while [ "$(tmux show-buffer)" = "$unique" ]; do
