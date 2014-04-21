@@ -1,0 +1,7 @@
+#!/bin/sh
+
+unique="REALLYUNIQUE"
+tmux set-buffer $unique
+while [ "$(tmux show-buffer)" = "$unique" ]; do
+    sleep 0.2
+done;
