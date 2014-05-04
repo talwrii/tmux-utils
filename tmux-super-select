@@ -5,7 +5,10 @@
 
 import subprocess
 
-subprocess.call(['tmux', 'display-message', 'Switching using dmenu'])
+def display(msg):
+    return subprocess.call(['tmux', 'display-message', msg])
+
+display('Switching using dmenu')
 windows_string = subprocess.check_output(
     ['tmux', 'list-windows', '-F', '#{window_name}'])
 windows = windows_string.splitlines()
@@ -15,7 +18,9 @@ p = subprocess.Popen(
     stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 chosen_window, _ = p.communicate(windows_string)
 
-if chosen_window not in windows:
+if chosen_window == '':
+    display("Cancelled")
+elif chosen_window not in windows:
     p = subprocess.Popen(
         ['dmenu', '-p', 'Create new window: {}'.format(chosen_window)], 
         stdin=subprocess.PIPE, stdout=subprocess.PIPE)
