@@ -6,14 +6,19 @@
 import subprocess
 
 subprocess.call(['tmux', 'display-message', 'Switching using dmenu'])
-windows_string = subprocess.check_output(['tmux', 'list-windows', '-F', '#{window_name}'])
+windows_string = subprocess.check_output(
+    ['tmux', 'list-windows', '-F', '#{window_name}'])
 windows = windows_string.splitlines()
 
-p = subprocess.Popen(['dmenu', '-p', 'Switch to tmux window:'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+p = subprocess.Popen(
+    ['dmenu', '-p', 'Switch to tmux window:'], 
+    stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 chosen_window, _ = p.communicate(windows_string)
 
 if chosen_window not in windows:
-    p = subprocess.Popen(['dmenu', '-p', 'Create new window: {}'.format(chosen_window)], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    p = subprocess.Popen(
+        ['dmenu', '-p', 'Create new window: {}'.format(chosen_window)], 
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     create = p.communicate('y\nn')[0] == 'y'
     if create:
         subprocess.call(['tmux', 'new-window', '-n', chosen_window]) 
