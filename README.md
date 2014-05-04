@@ -18,6 +18,10 @@ window
 
 **tmux-split-in-cwd** - open a new shell with same cwd as calling pane
 
+**tmux-xcopy** - select some text and immediately copy it to the X selection clipboard
+
+**tmux-copy** - select some text and immediately paste it into the current terminal
+
 
 Pane Zoom
 ---------
