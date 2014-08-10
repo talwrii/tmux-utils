@@ -8,24 +8,30 @@ import subprocess
 def display(msg):
     return subprocess.call(['tmux', 'display-message', msg])
 
+def dmenu_prompt(prompt, choices):
+    p = subprocess.Popen(
+        ['dmenu', '-p', prompt], 
+        stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    choice_string = '\n'.join(choices)
+    reply, _ = p.communicate(choice_string)
+    return reply.strip()
+
+
 display('Switching using dmenu')
 windows_string = subprocess.check_output(
     ['tmux', 'list-windows', '-F', '#{window_name}'])
 windows = windows_string.splitlines()
 
-p = subprocess.Popen(
-    ['dmenu', '-p', 'Switch to tmux window:'], 
-    stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-chosen_window, _ = p.communicate(windows_string)
+chosen_window = dmenu_prompt('Switch to tmux-window', windows)
 
 if chosen_window == '':
     display("Cancelled")
 elif chosen_window not in windows:
-    p = subprocess.Popen(
-        ['dmenu', '-p', 'Create new window: {}'.format(chosen_window)], 
-        stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    create = p.communicate('y\nn')[0] == 'y'
-    if create:
+    prompt = 'Create new window: {}?'.format(chosen_window)
+    response = dmenu_prompt(prompt, 'yn')
+    if response == 'y':
         subprocess.call(['tmux', 'new-window', '-n', chosen_window]) 
+    else:
+        display("You chose to not create a new window")
 else:
     subprocess.call(['tmux', 'select-window', '-t', chosen_window])
