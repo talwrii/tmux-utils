@@ -42,3 +42,4 @@ Configuration files (*.tmux)
 ----------------------------
 
 These are sample bindings. To use them source them from your .tmux.conf. You must ensure that a directory containing the binaries is on your path when you start tmux.
+
