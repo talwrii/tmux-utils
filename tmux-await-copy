@@ -5,6 +5,18 @@
 
 unique="REALLYUNIQUE"
 tmux set-buffer $unique
+abandon=""
+rm -f /tmp/tmux-abandon-copy
 while [ "$(tmux show-buffer)" = "$unique" ]; do
+    if [ -f /tmp/tmux-abandon-copy ]; then
+        abandon=yes
+        break
     sleep 0.2
 done;
+
+rm -f /tmp/tmux-abandon-copy
+
+if [ -n "$abandon" ]; then
+    tmux set-buffer ''
+    exit 1
+fi
