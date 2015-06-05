@@ -11,6 +11,7 @@ while [ "$(tmux show-buffer)" = "$unique" ]; do
     if [ -f /tmp/tmux-abandon-copy ]; then
         abandon=yes
         break
+    fi;
     sleep 0.2
 done;
 
@@ -20,3 +21,5 @@ if [ -n "$abandon" ]; then
     tmux set-buffer ''
     exit 1
 fi
+
+exit 0
