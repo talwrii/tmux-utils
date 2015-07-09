@@ -3,34 +3,83 @@
 
 "Prompt for new window using dmenu (completion), create a new window if we cannot find window ala emacs."
 
+import os
+import shutil
 import subprocess
+import tempfile
+import contextlib
 
 def display(msg):
     return subprocess.call(['tmux', 'display-message', msg])
 
+def menu_prog():
+    if 'DISPLAY' in os.environ:
+        return 'dmenu'
+    else:
+        return 'tmenu'
+
+@contextlib.contextmanager
+def temp_dir():
+    dir = tempfile.mkdtemp()
+    try:
+        yield dir
+    finally:
+        shutil.rmtree(dir)
+
+@contextlib.contextmanager
+def temp_pipe():
+    # Opening a pipe in read mode will block until
+    # the writer opens the file
+    with temp_dir() as d:
+        name = os.path.join(d, 'pipe')
+        os.mkfifo(name)
+        yield name
+
+def tmux_prompt(prompt, choices):
+    with temp_pipe() as pipe:
+        with tempfile.NamedTemporaryFile() as choices_file:
+            with tempfile.NamedTemporaryFile() as selection_file:
+                collect_command = 'source ~/.bashrc; cat {input} | tmenu -l 10 > {output}; echo "done" > {pipe}'.format(
+                    input=choices_file.name,
+                    output=selection_file.name,
+                    pipe=pipe)
+
+                choices_file.write('\n'.join(choices) + '\n')
+                choices_file.flush()
+                p = subprocess.Popen(['tmux', 'split-window', collect_command])
+                p.wait()
+                assert p.returncode == 0
+                # This should be timed out
+                with open(pipe):
+                    pass
+
+                return selection_file.read().strip()
+
 def dmenu_prompt(prompt, choices):
+    "Prompt for X"
     p = subprocess.Popen(
-        ['dmenu', '-p', prompt], 
+        ['dmenu', '-p', prompt],
         stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     choice_string = '\n'.join(choices)
     reply, _ = p.communicate(choice_string)
     return reply.strip()
 
+menu_prompt = dmenu_prompt if os.environ.get('DISPLAY') else tmux_prompt
 
-display('Switching using dmenu')
+display('Switching using menu')
 windows_string = subprocess.check_output(
     ['tmux', 'list-windows', '-F', '#{window_name}'])
 windows = windows_string.splitlines()
 
-chosen_window = dmenu_prompt('Switch to tmux-window', windows)
+chosen_window = menu_prompt('Switch to tmux-window', windows)
 
 if chosen_window == '':
     display("Cancelled")
 elif chosen_window not in windows:
     prompt = 'Create new window: {}?'.format(chosen_window)
-    response = dmenu_prompt(prompt, 'yn')
+    response = menu_prompt(prompt, 'yn')
     if response == 'y':
-        subprocess.call(['tmux', 'new-window', '-n', chosen_window]) 
+        subprocess.call(['tmux', 'new-window', '-n', chosen_window])
     else:
         display("You chose to not create a new window")
 else:
