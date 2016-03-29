@@ -7,9 +7,11 @@
 # Store it to `~/bin/tmx` and issue `chmod +x`.
 #
 
+here=$(dirname ${BASH_SOURCE[0]})
+
 # Works because bash automatically trims by assigning to variables and by
 # passing arguments
-trim() { echo $1; }
+function trim() { echo $1; }
 
 if [[ -z "$1" ]]; then
     echo "Specify session name as the first argument"
@@ -37,6 +39,12 @@ else
         # Create a new session (without attaching it) and link to base session
         # to share windows
         tmux -2 new-session -d -t $base_session -s $session_id
+
+        if [ -n "$2" ]; then
+
+            $here/tmux-win-in-session.py $session_id "$2"
+        fi;
+
         # Create a new window in that session
         #tmux new-window
         # Attach to the new session
