@@ -52,7 +52,7 @@ def tmux_prompt(prompt, choices):
 def dmenu_prompt(prompt, choices):
     "Prompt for X"
     p = subprocess.Popen(
-        ['rofi', '-dmenu', '-p', prompt],
+        ['rofi', '-dmenu', '-p', prompt, '-fuzzy'],
         stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     choice_string = '\n'.join(choices)
     reply, _ = p.communicate(choice_string)
