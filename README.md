@@ -1,7 +1,7 @@
 tmux-utils
 ==========
 
-Various scripts and added tmux beahviors.
+Various scripts and added tmux behaviours.
 
 **tmux-get VAR** - gets variable VAR from within the tmux environment
 
@@ -22,6 +22,17 @@ window
 
 **tmux-copy** - select some text and immediately paste it into the current terminal
 
+**tmux-super-select** - Select a window using a pop up window (tmenu or rofi)
+
+**tmx** - Allow mutiple distinct views into the same tmux session.
+
+Alternatives
+-----------
+
+You might want to look the `tmux-plugins` library https://github.com/tmux-plugins.
+This seems to be a plugin framework very much influenced by zsh.
+
+The `tmuxp` library can be very useful for your own ad-hoc tools.
 
 Pane Zoom
 ---------
@@ -42,4 +53,3 @@ Configuration files (*.tmux)
 ----------------------------
 
 These are sample bindings. To use them source them from your .tmux.conf. You must ensure that a directory containing the binaries is on your path when you start tmux.
-
